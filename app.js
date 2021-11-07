@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const uri = 'mongodb://localhost:27017/mongo-auth';
+const uri = `mongodb+srv://${process.env.MONGO_LOGIN}:${process.env.MONGO_PASSWORD}@cluster0.ehsch.mongodb.net/node-course-app?retryWrites=true&w=majority`;
 
 mongoose.connect(uri, {
   useUnifiedTopology: true,
