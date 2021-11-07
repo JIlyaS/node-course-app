@@ -1,5 +1,6 @@
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const Permission = require('../models/Permission');
 // const router = require('../routes');
 
 module.exports.login = (req, res, next) => {
@@ -13,7 +14,9 @@ module.exports.login = (req, res, next) => {
       });
     }
 
-    req.logIn(user, () => {
+    req.logIn(user, async () => {
+      console.log("🚀 ~ file: login.js ~ line 18 ~ req.logIn ~ user", user)
+      const permission = await Permission.findById({_id: String(user.permission)});
       const body = {
         _id: user.id,
         email: user.email
@@ -21,7 +24,13 @@ module.exports.login = (req, res, next) => {
       // Код генерирует ключ авторизации в соответствии с зарегистрированным пользователем синхронно
       const token = jwt.sign({user: body}, process.env.JWT_SECRET);
       return res.json({
-        accessToken: `Bearer ${token}`
+        username: user.username,
+        surName: user.surName,
+        firstName: user.firstName,
+        middleName: user.middleName,
+        image: user.image,
+        permission: permission.permission,
+        accessToken: `Bearer ${token}`,
       });
     });
   })(req, res, next);

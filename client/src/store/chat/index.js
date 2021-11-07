@@ -61,7 +61,7 @@ export default combineReducers({
 
 export const connectSocket = () => (dispatch, getState) => {
   const userProfile = userProfileSelector(getState());
-  socket = socketIO('https://obscure-tor-61309.herokuapp.com');
+  socket = socketIO('http://localhost:3000');
 
   socket.emit('users:connect', { userId: userProfile.id, username: userProfile.username });
 
